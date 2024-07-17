@@ -1,13 +1,13 @@
-import videoSource from '../../public/images/background.mp4'
+import './Home.css'
+import { useState } from 'react';
 import Lottie from 'lottie-react'
-import loginAni from '../../public/Animation/logIn.json'
+import { Link} from 'react-router-dom';
 import { IoMdEye } from "react-icons/io";
 import { IoIosEyeOff } from "react-icons/io";
-import { useState } from 'react';
-import './Home.css'
-import { Link} from 'react-router-dom';
-import { Bounce, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
+import loginAni from '../../public/Animation/logIn.json'
+import videoSource from '../../public/images/background.mp4'
+import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 
 const Home = () => {
