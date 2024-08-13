@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Lottie from 'lottie-react'
 import { Link} from 'react-router-dom';
@@ -11,6 +10,7 @@ import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 const RegisterPass = () => {
   const [pass, setPass]= useState(false)
+  const [conPass, setConPass]= useState(false)  // Added separate state for confirm password
   const [user,setUser] = useState('')
   const [userErr, setUserErr] = useState('')
   const [email, setEmail] = useState('')
@@ -24,7 +24,11 @@ const RegisterPass = () => {
   const handleShow = () =>{
     setPass(!pass)
   }
-  
+
+  const handleConShow = () =>{
+    setConPass(!conPass)
+  }
+
   const handleUser = (e) => {
     setUser(e.target.value)
     setUserErr('')
@@ -56,7 +60,7 @@ const RegisterPass = () => {
           if (!conpassword){
             setConPasserr('Please confirm your password')
           } else {
-            toast('🦄 Login successful! Welcome back!', {
+            toast("Registration in progress..Please wait.", {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: false,
@@ -85,7 +89,7 @@ const RegisterPass = () => {
         <source src={videoSource} type="video/mp4" />
       </video>
       <div className="relative w-full h-[580px] z-10 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-xl bg-transparent shadow-[-10px_10px_19px_10px_rgba(0,0,0,0.38)]">
-        <div className='main'>
+        <div className='main flex gap-32 items-center'>
           <Lottie className='animation' animationData={loginAni} loop={true} />
           <div className='w-[400px] pb-5 mt-7 bg-[#5a34f1] rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex flex-col items-center'>
             <h1 className='login'>Sign Up</h1>
@@ -110,14 +114,14 @@ const RegisterPass = () => {
                 }
               </div>
               <p>{passerr}</p>
-              <label htmlFor="pass">Confirm Password</label>
+              <label htmlFor="Conpass">Confirm Password</label>
               <div className='relative'>
-                <input onChange={handleConPassword} type={pass ? "text" : "password"} id='pass' name='pass' placeholder='Confirm your Password' />
+                <input onChange={handleConPassword} type={conPass ? "text" : "password"} id='Conpass' name='Conpass' placeholder='Confirm your Password' />
                 {
-                  pass ?
-                    <IoMdEye onClick={handleShow}  className='icon' />
+                  conPass ?
+                    <IoMdEye onClick={handleConShow}  className='icon' />
                     :
-                    <IoIosEyeOff onClick={handleShow} className='icon'  />
+                    <IoIosEyeOff onClick={handleConShow} className='icon'  />
                 }
               </div>
               <p>{conpasserr}</p>
