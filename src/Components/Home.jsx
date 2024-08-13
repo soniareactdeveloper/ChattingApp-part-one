@@ -67,7 +67,7 @@ const Home = () => {
       <div className="relative w-[1070px] h-[460px] z-10 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-xl bg-transparent shadow-[-10px_10px_19px_10px_rgba(0,0,0,0.38)]">
         <div className='main'>
           <Lottie className='animation' animationData={loginAni} loop={true} />
-          <div className='w-[400px] h-[400px] bg-[#5a34f1] mt-7 rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex flex-col items-center'>
+          <div className='w-[400px] h-[410px] bg-[#5a34f1] mt-7 rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex flex-col items-center'>
             <h1 className='login'>Login</h1>
             <form onSubmit={handleSubmit}>
               <label htmlFor="email">Email</label>
@@ -93,6 +93,7 @@ const Home = () => {
                 <Link to="/forgetpass">Forgot Password?</Link>
               </div>
               <button className='logBtn'>Log In</button>
+              <h4 className='pt-1'>Don't have an account? <Link className='text-[#E3FF43] text-md font-sans font-bold' to="/register">Sign Up</Link></h4>
             </form>
           </div>
         </div>
