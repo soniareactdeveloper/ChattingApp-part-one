@@ -4,6 +4,7 @@ import HomePage from './Pages/HomePage'
 import ForgetPass from './Pages/ForgetPass'
 import NotFound from './Pages/NotFound'
 import RegisterPass from './Pages/RegisterPass'
+import database from './firebase.config'
 
 function App() {
   const route = createBrowserRouter(
