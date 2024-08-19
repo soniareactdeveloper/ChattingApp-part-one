@@ -6,8 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import loginAni from '../../public/Animation/logIn.json';
 import videoSource from '../../public/images/background.mp4';
 import { Bounce, toast, ToastContainer } from 'react-toastify';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { CircleLoader } from 'react-spinners';
+
 
 const RegisterPass = () => {
   const [pass, setPass] = useState(false);
@@ -54,6 +55,12 @@ const RegisterPass = () => {
       setLoading(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+          // Update a user's profile
+          updateProfile(auth.currentUser, {
+            displayName: user,
+            photoURL: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          })
+
           setLoading(false);
           toast('Registration Successful', {
             position: "top-right",
@@ -68,7 +75,8 @@ const RegisterPass = () => {
           });
           setTimeout(() => {
             navigate('/');
-          }, 1000); // Delay navigation to ensure toast displays
+           }, 1000); // Delay navigation to ensure toast displays
+          sendEmailVerification(auth.currentUser)
         })
         .catch((error) => {
           setLoading(false);

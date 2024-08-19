@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import loginAni from '../../public/Animation/logIn.json'
 import videoSource from '../../public/images/background.mp4'
 import { Bounce, toast, ToastContainer } from 'react-toastify';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 
 const Home = () => {
@@ -17,6 +18,8 @@ const Home = () => {
   const [password, setPassword] = useState('')
   const [passerr, setPasserr] = useState('')
 
+
+  const auth = getAuth();
 
   const handleShow = () =>{
     setPass(!pass)
@@ -38,17 +41,36 @@ const Home = () => {
       if(!password){
         setPasserr('Please enter your password')
       } else {
-        toast('🦄 Login successful! Welcome back!', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          toast('🦄 Login successful! Welcome back!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+            });
+            console.log (user)
+        })
+        .catch((error) => {
+          toast(error.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
           });
+        });
       }
     }
   }
@@ -74,6 +96,7 @@ const Home = () => {
               <br />
               <input onChange={handleEmail} type="email" id='email' name='email' placeholder='Enter your email' />
               <p>{emailerr}</p>
+
               <label htmlFor="pass">Password</label>
               <div className='relative'>
                 <input onChange={handlePassword} type={pass ? "text" : "password"} id='pass' name='pass' placeholder='Enter your Password' />
@@ -85,6 +108,7 @@ const Home = () => {
                 }
               </div>
               <p>{passerr}</p>
+              
               <div className='text flex items-center gap-10'>
                 <div className='flex items-center gap-2'>
                   <input type="checkbox" />
