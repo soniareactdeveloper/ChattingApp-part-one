@@ -9,7 +9,6 @@ import { Bounce, toast, ToastContainer } from 'react-toastify';
 import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { CircleLoader } from 'react-spinners';
 
-
 const RegisterPass = () => {
   const [pass, setPass] = useState(false);
   const [user, setUser] = useState('');
@@ -18,9 +17,14 @@ const RegisterPass = () => {
   const [emailErr, setEmailErr] = useState('');
   const [password, setPassword] = useState('');
   const [passErr, setPassErr] = useState('');
+  const [Confirmpassword, setConfirmPassword] = useState('');
+  const [ConfirmpassErr, setConfirmPassErr] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // navigate
   const navigate = useNavigate();
 
+  // firebase
   const auth = getAuth();
 
   const handleShow = () => {
@@ -42,27 +46,41 @@ const RegisterPass = () => {
     setPassErr('');
   };
 
+  const handleConfirmPassword = (e) => {
+    setConfirmPassword(e.target.value);
+    setConfirmPassErr('');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!user) {
       setUserErr('Please enter your user name');
+
     } else if (!email) {
       setEmailErr('Please enter your email');
+
     } else if (!password) {
       setPassErr('Please enter your password');
+
+    } else if (!Confirmpassword) {
+      setConfirmPassErr('Please confirm your password');
+    
+    } else if (password !== Confirmpassword) {
+      setConfirmPassErr('Passwords do not match');
+      
     } else {
       setLoading(true);
-      createUserWithEmailAndPassword(auth, email, password)
+      createUserWithEmailAndPassword(auth, email, Confirmpassword)
         .then((userCredential) => {
           // Update a user's profile
           updateProfile(auth.currentUser, {
             displayName: user,
             photoURL: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-          })
+          });
 
           setLoading(false);
-          toast('Registration Successful', {
+          toast('Varify Your Email', {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -75,8 +93,8 @@ const RegisterPass = () => {
           });
           setTimeout(() => {
             navigate('/');
-           }, 1000); // Delay navigation to ensure toast displays
-          sendEmailVerification(auth.currentUser)
+          }, 1000); // Delay navigation to ensure toast displays
+          sendEmailVerification(auth.currentUser);
         })
         .catch((error) => {
           setLoading(false);
@@ -107,16 +125,16 @@ const RegisterPass = () => {
           <source src={videoSource} type="video/mp4" />
         </video>
         <div className="relative w-full h-[580px] z-10 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-xl bg-transparent shadow-[-10px_10px_19px_10px_rgba(0,0,0,0.38)]">
-          <div className='main flex gap-32 justify-center items-center'>
+          <div className='main flex justify-center items-center'>
             <Lottie className='animation' animationData={loginAni} loop={true} />
-            <div className='w-[400px] pb-5 bg-[#5a34f1] rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex flex-col items-center mt-16'>
+            <div className='w-[400px] p-9 mt-2 bg-[#5a34f1] rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] flex flex-col items-center'>
               <h1 className='login'>Sign Up</h1>
               <form onSubmit={handleSubmit}>
                 <label htmlFor="user">User Name</label>
                 <br />
                 <input 
                   onChange={handleUser} 
-                  type="user" 
+                  type="text" 
                   id='user' 
                   name='user' 
                   placeholder='Enter your User name' 
@@ -148,6 +166,23 @@ const RegisterPass = () => {
                   }
                 </div>
                 <p>{passErr}</p>
+
+                <label htmlFor="confirm-pass">Confirm Password</label>
+                <div className='relative'>
+                  <input 
+                    onChange={handleConfirmPassword} 
+                    type={pass ? "text" : "password"} 
+                    id='confirm-pass' 
+                    name='confirm-pass' 
+                    placeholder='Confirm your Password' 
+                  />
+                  {pass ? 
+                    <IoMdEye onClick={handleShow} className='icon' /> : 
+                    <IoIosEyeOff onClick={handleShow} className='icon' />
+                  }
+                </div>
+                <p>{ConfirmpassErr}</p>
+
                 {loading ?
                   <div className='logBtn h-[44px] flex items-center justify-center'>
                     <CircleLoader size="30px" color='#113C7A' />
