@@ -1,6 +1,4 @@
 import Home from "../Components/Home"
-
-
 const HomePage = () => {
   return (
     <>

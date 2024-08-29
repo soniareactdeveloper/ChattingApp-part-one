@@ -92,7 +92,7 @@ const RegisterPass = () => {
             transition: Bounce,
           });
           setTimeout(() => {
-            navigate('/');
+            navigate('/home');
           }, 1000); // Delay navigation to ensure toast displays
           sendEmailVerification(auth.currentUser);
         })
@@ -190,7 +190,7 @@ const RegisterPass = () => {
                   <button className='logBtn'>Sign Up</button>
                 }
                 <h4 className='pt-1'>Already have an account? 
-                  <Link className='text-[#E3FF43] text-md font-sans font-bold' to="/">Sign In</Link>
+                  <Link className='text-[#E3FF43] text-md font-sans font-bold' to="/home">Sign In</Link>
                 </h4>
               </form>
             </div>

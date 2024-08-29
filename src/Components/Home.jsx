@@ -1,7 +1,7 @@
 import './Home.css'
 import { useState } from 'react';
 import Lottie from 'lottie-react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoMdEye } from "react-icons/io";
 import { IoIosEyeOff } from "react-icons/io";
 import 'react-toastify/dist/ReactToastify.css'; 
@@ -9,6 +9,8 @@ import loginAni from '../../public/Animation/logIn.json'
 import videoSource from '../../public/images/background.mp4'
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { incrementByAmount } from '../Slice/UserSlice';
 
 const Home = () => {
   const [pass, setPass] = useState(false)
@@ -16,6 +18,8 @@ const Home = () => {
   const [emailerr, setEmailerr] = useState('')
   const [password, setPassword] = useState('')
   const [passerr, setPasserr] = useState('')
+  const navigate =useNavigate()
+  const dispatch             =useDispatch()
 
   const auth = getAuth();
 
@@ -42,13 +46,14 @@ const Home = () => {
         setPasserr('Please enter your password');
       } else {
         signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            const user = userCredential.user;
-
-            if (!user.emailVerified) {
-              toast.error('Please verify your email before logging in.', {
-                position: "top-right",
-                autoClose: 5000,
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user)
+          
+          if (!user.emailVerified) {
+            toast.error('Please verify your email before logging in.', {
+              position: "top-right",
+              autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -69,6 +74,13 @@ const Home = () => {
                 theme: "light",
                 transition: Bounce,
               });
+              // navigate
+              navigate('/')
+
+              // dispatch
+              dispatch( incrementByAmount(user))
+
+              localStorage.setItem('userData', JSON.stringify(user))
             }
           })
           .catch((error) => {
